@@ -1,26 +1,43 @@
-let position;
-let velocity;
+let walker;
 
 function setup() {
     createCanvas(640, 240);
 
-    position = createVector(100, 100);
-    velocity = createVector(1, 3.33);
+    walker = new Walker();
+
 }
 
 function draw() {
     background(255);
 
-    position.add(velocity);
+    walker.update();
+    walker.checkEdges();
+    walker.show();
+}
 
-    if (position.x > width || position.x < 0) {
-        velocity.x = velocity.x * -1;
-    }
-    if (position.y > height || position.y < 0) {
-        velocity.y = velocity.y * -1;
+class Walker {
+    constructor() {
+        this.position = createVector(random(width), random(height));
+        this.velocity = createVector(random(-2, 2), random(-2, 2));
     }
 
-    stroke(0);
-    fill(127);
-    circle(position.x, position.y, 48);
+    update() {
+        this.position.add(this.velocity);
+    }
+
+    show() {
+        stroke(0);
+        strokeWeight(2);
+        fill(127);
+        circle(this.position.x, this.position.y, 48);
+    }
+
+    checkEdges() {
+        if (this.position.x > width || this.position.x < 0) {
+            this.velocity.x = this.velocity.x * -1;
+        }
+        if (this.position.y > height || this.position.y < 0) {
+            this.velocity.y = this.velocity.y * -1;
+        }
+    }
 }
